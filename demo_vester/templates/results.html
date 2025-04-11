@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <style>
+        /* Custom zoom-out styling */
+        .zoom-out-container {
+            transform: scale(0.9); /* Slight zoom-out */
+            transform-origin: top center;
+            height: 100vh; /* Full viewport height */
+        }
+        /* Scrollable inner form container */
+        .form-container {
+            max-width: 800px; /* Wider container */
+            overflow-y: auto;
+            height: 100%; /* Take full height of viewport */
+            margin: auto;
+            padding: 2rem;
+        }
+        body {
+        font-family: "Roboto", serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="zoom-out-container flex items-center justify-center">
+        <div class="form-container bg-white rounded-lg shadow-md">
+            <h1 class="text-3xl font-bold mb-6 text-center">Resultats pour {{firstname}} {{lastname}}</h1>
+            <br>
+            <img src="https://allarassemjonathan.github.io/marate_white.png">
+            <br>
+            <h2 class="text-3xl font-bold mb-6 text-center">Bienvenue Patient #{{num}}!</h2>
+            <div class="bg-white-100 border border-white-400 text-white-700 px-4 py-3 rounded mb-4">
+                Merci d'avoir remplit le formulaire. Nous vous prions de patienter qu'une infirmiere appelle votre numero. 
+            </div>
+        </div>
+    </div>
+</body>
+</html>
