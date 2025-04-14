@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marate AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    
+    <style> 
+        /* Custom zoom-out styling */
+        .zoom-out-container {
+            transform: scale(0.9); /* Slight zoom-out */
+            transform-origin: top center;
+            height: 100vh; /* Full viewport height */
+        }
+        /* Scrollable inner form container */
+        .form-container {
+            max-width: 800px; /* Wider container */
+            overflow-y: auto;
+            height: 100%; /* Take full height of viewport */
+            margin: auto;
+            padding: 2rem;
+        }
+        body, .download-popup  {
+        font-family: "Roboto", serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="zoom-out-container flex items-center justify-center">
+        <div class="form-container bg-white rounded-lg shadow-md">
+            <h1 class="text-3xl font-bold mb-6 text-center">Formulaire de pré-diagnostique pour l'infirmier</h1>
+            <br>
+            <img src="https://allarassemjonathan.github.io/marate_white.png">
+            <br>
+            <form action="/results_infirmier" method="POST" class="space-y-6">
+                <!-- Personal Information Section -->
+                <div>
+                    <label class="block text-gray-700 font-semibold">Prénom</label>
+                    <input type="text" name="firstname" required placeholder="Votre prénom" 
+                           class="w-full border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 mt-1">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold">Nom</label>
+                    <input type="text" name="lastname" required placeholder="Votre nom" 
+                           class="w-full border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 mt-1">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold">Date de naissance</label>
+                    <input type="date" name="dob" required 
+                           class="w-full border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 mt-1">
+                </div>
+
+
+                
+                <!-- Questions Section -->
+                {% for question in questions %}
+                <div>
+
+                    <label class="block text-gray-700 font-semibold">{{question.question}}</label>
+                    <input type="text" name="{{question.question}}" required placeholder="Votre {{question.question}}" 
+                                class="w-full border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 mt-1">
+
+                </div>
+                {% endfor %}
+                <div id="download-popup" class="shadow-md" style="display:none; position:fixed; top:50%; left:50%; transform: translate(-50%, -50%); background-color: #d7d7d7; color: rgb(0, 0, 0); padding: 15px; border-radius: 5px;">
+                </div>
+                <button id="diagnosis" type="submit" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600">Diagnostiquer</button>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+document.getElementById("diagnosis").addEventListener('click', popup_main);
+
+// main popup response
+function popup_main(){
+    popup("Merci pour le formulaire. Patientez quelques secondes...", 4000);
+}
+
+// main popup template
+function popup(text, time){
+        // Show the pop-up when download starts
+        const popup = document.getElementById("download-popup");
+        popup.innerText =text;
+        popup.style.display = "block";  // Show pop-up
+
+        // Automatically hide the pop-up after 3 seconds
+        setTimeout(() => {
+            popup.style.display = "none";  // Hide it again
+        }, time);  // 3000ms = 3 seconds
+  }
+  
+</script>
+</html>

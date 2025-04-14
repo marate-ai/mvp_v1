@@ -8,6 +8,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 
+acteur_inf = "toraltaerik@gmail.com"
+acteur_med = "amazonjerabe@gmail.com"
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
@@ -53,48 +55,195 @@ questions = [
         'question': 'Y a t\'il une distension thoracique (une expansion anormale ou une hyperinflation du thorax) ?',
         'options': ['Oui', 'Non', 'Je ne sais pas']
     },
+    # {
+    #     'id': 'q9',
+    #     'question': 'Mere VIH+ ou décédée de cause inconnue ?',
+    #     'options': ['Oui', 'Non', 'Je ne sais pas']
+    # },
+    # {
+    #     'id': 'q10',
+    #     'question': 'Eruptions cutanée récurrentes/dermatose ?',
+    #     'options': ['Oui', 'Non', 'Je ne sais pas']
+    # },
+    # {
+    #     'id': 'q11',
+    #     'question': 'Infection sexuellement transmissible ou symptomes évocateurs d\'une infection sexuellement transmissible ?',
+    #     'options': ['Oui', 'Non', 'Je ne sais pas']
+    # },
+    # {
+    #     'id': 'q12',
+    #     'question': 'Décés d\'un partenaire du au VIH ou suite d\'une longue maladie?',
+    #     'options': ['Oui', 'Non']
+    # },
+    # {
+    #     'id': 'q13',
+    #     'question': 'Notion de TB maladie actualle ou dans les 12 dernieres mois?',
+    #     'options': ['Oui', 'Non', 'Je ne sais pas']
+    # },
+    # {
+    #     'id': 'q14',
+    #     'question': 'Enduits blanchatres dans la bouche?',
+    #     'options': ['Oui', 'Non', 'Je ne sais pas']
+    # },
+    # {
+    #     'id': 'q15',
+    #     'question': 'Amaigrissement inexpliqué?',
+    #     'options': ['Oui', 'Non']
+    # },
+]
+
+
+
+questions_infirmier = [
     {
-        'id': 'q9',
-        'question': 'Mere VIH+ ou décédée de cause inconnue ?',
-        'options': ['Oui', 'Non', 'Je ne sais pas']
-    },
+        'id': 'q1',
+        'question': 'Temperature',
+    }, 
     {
-        'id': 'q10',
-        'question': 'Eruptions cutanée récurrentes/dermatose ?',
-        'options': ['Oui', 'Non', 'Je ne sais pas']
-    },
+       'id': 'q2',
+        'question': 'Poids', 
+    }, 
     {
-        'id': 'q11',
-        'question': 'Infection sexuellement transmissible ou symptomes évocateurs d\'une infection sexuellement transmissible ?',
-        'options': ['Oui', 'Non', 'Je ne sais pas']
-    },
+        'id': 'q3',
+        'question': 'Taille',
+    }, 
     {
-        'id': 'q12',
-        'question': 'Décés d\'un partenaire du au VIH ou suite d\'une longue maladie?',
-        'options': ['Oui', 'Non']
-    },
+        'id': 'q4',
+        'question': 'Tension Arterielle',
+    }
+]
+
+
+questions_reception = [
     {
-        'id': 'q13',
-        'question': 'Notion de TB maladie actualle ou dans les 12 dernieres mois?',
-        'options': ['Oui', 'Non', 'Je ne sais pas']
-    },
+        'id': 'q1',
+        'question': 'Nom',
+    }, 
     {
-        'id': 'q14',
-        'question': 'Enduits blanchatres dans la bouche?',
-        'options': ['Oui', 'Non', 'Je ne sais pas']
-    },
+       'id': 'q2',
+        'question': 'Sexe', 
+    }, 
     {
-        'id': 'q15',
-        'question': 'Amaigrissement inexpliqué?',
-        'options': ['Oui', 'Non']
-    },
+        'id': 'q3',
+        'question': 'Age',
+    }, 
+    {
+        'id': 'q4',
+        'question': 'Adresse du patient',
+    }
 ]
 
 randnum = 0
 
+
+# definir les routes accessibles au niveau de ton site web.
+# route infirmier
+@app.route("/infirmier", methods=['GET', 'POST'])
+# definir ce qui se passe quand tu prends une de ces routes
+def route_infirmier():
+    return render_template("index_infirmier.html", questions=questions_infirmier)   
+
+
+# definir les routes accessibles au niveau de ton site web.
+# route infirmier
+@app.route("/reception", methods=['GET', 'POST'])
+# definir ce qui se passe quand tu prends une de ces routes
+def route_reception():
+    return render_template("index_reception.html", questions=questions_reception)   
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     return render_template("index.html", questions=questions)     
+
+@app.route("/results_infirmier", methods=["POST"])
+def results_infirmier(): 
+    global randnum
+    randnum+=1 
+    answers = {}
+    firstname = ''
+    lastname = ''
+    dob = ''
+
+    print(request.form.keys())
+    for key in request.form.keys():
+            answers[key] = request.form.get(key)
+   
+    print(answers)
+    
+    # for key in request.form.keys():
+    #     if 'q10' in key or 'q11' in key or 'q12' in key :
+    #         answers[key[9:11]] = request.form.get(key)
+    
+    # firstname = answers['firstname']
+    # lastname = answers['lastname']
+    # dob = answers['dob']
+
+    # term_dic = {"Oui":1, "Non":0, 'Je ne sais pas':0.5, 'Adulte': 1, 'Enfant': 0, 'Enfant ':0, 'Adulte ':1}
+    # for k,v in answers.items():
+    #     if k in term_dic:
+    #         answers[k] = term_dic[answers[k]]
+
+    # print(answers)
+    # qa ={}
+    # questions_li = list(map(lambda e:e['question'], questions))
+    # for i in range(len(questions)):
+    #     if str(i) in answers.keys():
+    #         qa[questions_li[i]]=answers[str(i)]
+    
+    firstname = answers['firstname']
+    lastname = answers['lastname']
+    responses = non_html_display(answers)
+    responses += '\n\nLien formulaire infirmier: 127.0.0.155:5000/results'
+    email_infirmier(firstname, lastname, responses, None)
+    return render_template("results.html", num=randnum, questions=questions, firstname=firstname, lastname=lastname) 
+
+
+
+@app.route("/results_reception", methods=["POST"])
+def results_reception(): 
+    global randnum
+    randnum+=1 
+    answers = {}
+    firstname = ''
+    lastname = ''
+    dob = ''
+
+    print(request.form.keys())
+    for key in request.form.keys():
+            answers[key] = request.form.get(key)
+   
+    print(answers)
+    
+    # for key in request.form.keys():
+    #     if 'q10' in key or 'q11' in key or 'q12' in key :
+    #         answers[key[9:11]] = request.form.get(key)
+    
+    # firstname = answers['firstname']
+    # lastname = answers['lastname']
+    # dob = answers['dob']
+
+    # term_dic = {"Oui":1, "Non":0, 'Je ne sais pas':0.5, 'Adulte': 1, 'Enfant': 0, 'Enfant ':0, 'Adulte ':1}
+    # for k,v in answers.items():
+    #     if k in term_dic:
+    #         answers[k] = term_dic[answers[k]]
+
+    # print(answers)
+    # qa ={}
+    # questions_li = list(map(lambda e:e['question'], questions))
+    # for i in range(len(questions)):
+    #     if str(i) in answers.keys():
+    #         qa[questions_li[i]]=answers[str(i)]
+
+    firstname = answers['Nom']
+    lastname =''
+    responses = non_html_display(answers)
+    responses += '\n\nLien formulaire infirmier: 127.0.0.155:5000/infirmier'
+    email_reception(firstname, lastname, responses, None)
+    return render_template("results.html", num=randnum, questions=questions, firstname=firstname, lastname=lastname) 
+
+
+
 
 @app.route("/results", methods=["POST"])
 def results(): 
@@ -176,6 +325,8 @@ def results():
     # Email the person in charge
     email(firstname, lastname, responses, img)
     return render_template("results.html", num=randnum, questions=questions, plot_url=plot_url, comment=comment, firstname=firstname, lastname=lastname) 
+    # return render_template("test.html")
+
 
 @app.route("/feedbacks")
 def email_feedbacks():  
@@ -238,10 +389,134 @@ def email(firstname, lastname, body, plot):
     """
     msg.attach(MIMEText(html, 'html'))
 
-    # Embed the graph as an inline image
-    image = MIMEImage(plot.getvalue(), name="graph.png")
-    image.add_header("Content-ID", "<graph>")
-    msg.attach(image)
+    if plot:
+        # Embed the graph as an inline image
+        image = MIMEImage(plot.getvalue(), name="graph.png")
+        image.add_header("Content-ID", "<graph>")
+        msg.attach(image)
+
+
+    # Connect to the SMTP server and send the email
+    try:
+        # Establish connection to Gmail's SMTP server
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()  # Secure the connection
+
+        # Log in to the server
+        server.login(your_email, your_password)
+
+        # Send the email
+        server.send_message(msg)
+
+        print("Email sent successfully!")
+
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
+    finally:
+        # Close the connection to the server
+        server.quit()
+
+    # You could include additional validation for the URL here if needed
+    return jsonify(success=True)
+
+
+def email_infirmier(firstname, lastname, body, plot):
+
+    # sending the email
+    subject = f"Rapport infirmier pour le patient {firstname} {lastname}"
+    recipient_email = your_email
+    
+    # create the MIME message
+    msg = MIMEMultipart()
+    msg['From'] = your_email
+    msg['To'] = acteur_med
+    msg['Subject'] = subject
+
+    # add an HTML body with the embedded image
+    html = f"""
+    <html>
+    <body>
+    Cher médecin, <br><br>ci-dessous les prises de mesures {firstname} {lastname}. 
+    <br>
+        <br>
+        <p>
+        {body}
+        </p>
+        <br>
+        <img style="width: 350px; height: 100px;" src="https://allarassemjonathan.github.io/marate_white.png">
+    </body>
+    </html>
+    """
+    msg.attach(MIMEText(html, 'html'))
+
+    if plot:
+        # Embed the graph as an inline image
+        image = MIMEImage(plot.getvalue(), name="graph.png")
+        image.add_header("Content-ID", "<graph>")
+        msg.attach(image)
+
+
+    # Connect to the SMTP server and send the email
+    try:
+        # Establish connection to Gmail's SMTP server
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()  # Secure the connection
+
+        # Log in to the server
+        server.login(your_email, your_password)
+
+        # Send the email
+        server.send_message(msg)
+
+        print("Email sent successfully!")
+
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
+    finally:
+        # Close the connection to the server
+        server.quit()
+
+    # You could include additional validation for the URL here if needed
+    return jsonify(success=True)
+
+
+
+def email_reception(firstname, lastname, body, plot):
+
+    # sending the email
+    subject = f"Rapport infirmier pour le patient {firstname} {lastname}"
+    recipient_email = your_email
+    
+    # create the MIME message
+    msg = MIMEMultipart()
+    msg['From'] = your_email
+    msg['To'] = acteur_inf
+    msg['Subject'] = subject
+
+    # add an HTML body with the embedded image
+    html = f"""
+    <html>
+    <body>
+    Chers infirmiers, <br><br>ci-dessous les informations du patient {firstname} {lastname}. 
+    <br>
+        <br>
+        <p>
+        {body}
+        </p>
+        <br>
+        <img style="width: 350px; height: 100px;" src="https://allarassemjonathan.github.io/marate_white.png">
+    </body>
+    </html>
+    """
+    msg.attach(MIMEText(html, 'html'))
+
+    if plot:
+        # Embed the graph as an inline image
+        image = MIMEImage(plot.getvalue(), name="graph.png")
+        image.add_header("Content-ID", "<graph>")
+        msg.attach(image)
 
 
     # Connect to the SMTP server and send the email
@@ -270,7 +545,16 @@ def email(firstname, lastname, body, plot):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
 
 
+
+# localhost : 127.0.0.1:5000
+#
+# @app.route(/jaime_sen)
+# def jaime_sen():
+    # while True:
+    #    print('j'aime le senegal)
+#    return "DONE"
+#
 
